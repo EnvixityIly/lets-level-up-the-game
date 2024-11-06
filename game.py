@@ -3,7 +3,7 @@ import random
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 500, 400
 
-MOVEMENT_SPEED = 30
+MOVEMENT_SPEED = 50
 FONT_SIZE = 72
 
 pygame.init()
@@ -40,6 +40,17 @@ sprite2.rect.x = random.randint(0, SCREEN_WIDTH - sprite1.rect.width)
 sprite2.rect.y = random.randint(0, SCREEN_HEIGHT - sprite1.rect.height)
 all_sprites.add(sprite2)
 
+sprite4 = Sprite(pygame.Color('blue'), 20, 30)
+sprite4.rect.x = random.randint(0, SCREEN_WIDTH - sprite1.rect.width)
+sprite4.rect.y = random.randint(0, SCREEN_HEIGHT - sprite1.rect.height)
+all_sprites.add(sprite4)
+
+sprite3 = Sprite(pygame.Color('grey'), 20, 30)
+sprite3.rect.x = random.randint(0, SCREEN_WIDTH - sprite1.rect.width)
+sprite3.rect.y = random.randint(0, SCREEN_HEIGHT - sprite1.rect.height)
+all_sprites.add(sprite3)
+won = True
+
 running, won = True, False
 clock = pygame.time.Clock()
 
@@ -50,13 +61,19 @@ while running:
         if not won:
             keys = pygame.key.get_pressed()
 
-            x_change = (keys[pygame.K_RIGHT] - keys[pygame.K_LEFT] * MOVEMENT_SPEED)
+            x_change = ((keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]) * MOVEMENT_SPEED)
             
-            y_change = (keys[pygame.K_DOWN] - keys[pygame.K_UP] * MOVEMENT_SPEED)
+            y_change = ((keys[pygame.K_DOWN] - keys[pygame.K_UP]) * MOVEMENT_SPEED)
 
             sprite1.move(x_change,y_change)
 
             if sprite1.rect.colliderect(sprite2.rect):
+                all_sprites.remove(sprite2)
+                won = True
+            if sprite1.rect.colliderect(sprite3.rect):
+                all_sprites.remove(sprite2)
+                won = True
+            if sprite1.rect.colliderect(sprite4.rect):
                 all_sprites.remove(sprite2)
                 won = True
         screen.blit(background_image,(0,0))
